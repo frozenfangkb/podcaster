@@ -1,14 +1,11 @@
 import React, { useEffect } from "react";
 import { Entry, ITunesResponse } from "../models/ITunesResponse";
 import { PodcastCard } from "../components/PodcastCard";
-import {
-  selectEntries,
-  setEntries,
-  setLastUpdated,
-} from "../store/slices/podcastSlice";
+import { selectEntries, setEntries } from "../store/slices/podcastSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { getPodcastList } from "../services/api/itunes/itunesService";
 import { setLoading } from "../store/slices/loadingSlice";
+import { getHoursDifference } from "../util/getHoursDifference";
 
 export const MainPage: React.FC = () => {
   const entries = useAppSelector(selectEntries);
@@ -20,10 +17,28 @@ export const MainPage: React.FC = () => {
 
   const initialize = async () => {
     dispatch(setLoading(true));
+    const localEntries: Entry[] | null = localStorage.getItem("entries")
+      ? JSON.parse(localStorage.getItem("entries")!)
+      : null;
+
+    if (localEntries && localStorage.getItem("lastUpdated")) {
+      getHoursDifference(
+        new Date(localStorage.getItem("lastUpdated")!),
+        new Date()
+      ) > 24
+        ? await reloadEntries()
+        : dispatch(setEntries(localEntries ?? []));
+    } else {
+      await reloadEntries();
+    }
+    dispatch(setLoading(false));
+  };
+
+  const reloadEntries = async () => {
     const list: ITunesResponse = await getPodcastList();
     dispatch(setEntries(list.feed.entry ?? []));
-    dispatch(setLastUpdated(new Date()));
-    dispatch(setLoading(false));
+    localStorage.setItem("lastUpdated", list.feed.updated.label);
+    localStorage.setItem("entries", JSON.stringify(list.feed.entry));
   };
 
   return (

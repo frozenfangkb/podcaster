@@ -4,10 +4,9 @@ import { Entry } from '../../models/ITunesResponse';
 
 export interface PodcastState {
   entries: Entry[],
-  lastUpdated: Date | null
 }
 
-const initialState: PodcastState = { entries: [], lastUpdated: null };
+const initialState: PodcastState = { entries: []};
 
 export const podcastSlice = createSlice({
   name: "podcasts",
@@ -16,13 +15,10 @@ export const podcastSlice = createSlice({
     setEntries: (state, action: PayloadAction<Entry[]>) => {
       state.entries = action.payload;
     },
-    setLastUpdated: (state, action: PayloadAction<Date>) => {
-        state.lastUpdated = action.payload;
-      },
   },
 });
 
-export const { setEntries, setLastUpdated } = podcastSlice.actions;
+export const { setEntries } = podcastSlice.actions;
 
 export const selectEntries = (state: RootState) => state.entries.entries;
 
