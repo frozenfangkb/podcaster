@@ -21,7 +21,7 @@ export const MainPage: React.FC = () => {
       <Header />
       <div className="mainContainer">
         <div className="grid grid-cols-4 gap-x-4 gap-y-32">
-          {podcastList.map((entry) => (
+          {podcastList.map((entry: Entry) => (
             <PodcastCard
               title={entry["im:name"].label}
               author={entry["im:artist"].label}
