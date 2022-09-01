@@ -1,5 +1,5 @@
 .card {
-  @apply h-36 w-56 bg-white shadow-md rounded-md flex flex-col items-center justify-end p-4 relative;
+  @apply h-36 w-64 bg-white shadow-md rounded-md flex flex-col items-center justify-end p-4 relative justify-self-center;
 }
 
 .cardImage {

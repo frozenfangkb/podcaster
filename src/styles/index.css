@@ -6,6 +6,22 @@ h2 {
   @apply text-2xl font-bold;
 }
 
+input {
+  @apply h-12 w-full border-2 border-gray-200 rounded-md p-2;
+}
+
+input:focus-visible {
+  @apply border border-blue-400 outline-none shadow shadow-blue-400;
+}
+
+input::placeholder {
+  @apply text-gray-200 text-base;
+}
+
 .mainContainer {
-  @apply px-12 py-10 flex flex-col gap-12;
+  @apply px-12 py-10 flex flex-col gap-24;
+}
+
+.chipCounter {
+  @apply bg-blue-400 px-4 py-2 rounded-md text-white text-lg font-bold;
 }
