@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import podcastReducer from './slices/podcastSlice';
+import loadingReducer from './slices/loadingSlice';
 
 const store = configureStore({
   reducer: {
     entries: podcastReducer,
+    loading: loadingReducer,
   },
 });
 
