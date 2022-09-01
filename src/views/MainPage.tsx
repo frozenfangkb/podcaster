@@ -6,8 +6,10 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { getPodcastList } from "../services/api/itunes/itunesService";
 import { setLoading } from "../store/slices/loadingSlice";
 import { getHoursDifference } from "../util/getHoursDifference";
+import { useNavigate } from "react-router-dom";
 
 export const MainPage: React.FC = () => {
+  const navigate = useNavigate();
   const entries = useAppSelector(selectEntries);
   const dispatch = useAppDispatch();
   const [filterValue, setFilterValue] = useState<string>("");
@@ -75,12 +77,18 @@ export const MainPage: React.FC = () => {
         </div>
         <div className="grid grid-cols-4 gap-x-4 gap-y-32">
           {filteredEntries.map((entry: Entry) => (
-            <PodcastCard
-              title={entry["im:name"].label}
-              author={entry["im:artist"].label}
-              image={entry["im:image"][2].label ?? ""}
+            <div
               key={entry.id.attributes["im:id"]}
-            />
+              onClick={() =>
+                navigate(`podcast/${entry.id.attributes["im:id"]}`)
+              }
+            >
+              <PodcastCard
+                title={entry["im:name"].label}
+                author={entry["im:artist"].label}
+                image={entry["im:image"][2].label ?? ""}
+              />
+            </div>
           ))}
         </div>
       </div>
