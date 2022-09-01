@@ -9,7 +9,7 @@ export interface PodcastState {
 
 const initialState: PodcastState = { entries: [], lastUpdated: null };
 
-export const entrySlice = createSlice({
+export const podcastSlice = createSlice({
   name: "podcasts",
   initialState,
   reducers: {
@@ -22,8 +22,8 @@ export const entrySlice = createSlice({
   },
 });
 
-export const { setEntries, setLastUpdated } = entrySlice.actions;
+export const { setEntries, setLastUpdated } = podcastSlice.actions;
 
-export const selectEntries = (state: RootState) => state.podcasts.entries;
+export const selectEntries = (state: RootState) => state.entries.entries;
 
-export default entrySlice.reducer;
+export default podcastSlice.reducer;

@@ -1,7 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
+import podcastReducer from './slices/podcastSlice';
 
 const store = configureStore({
-  reducer: {},
+  reducer: {
+    entries: podcastReducer,
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
