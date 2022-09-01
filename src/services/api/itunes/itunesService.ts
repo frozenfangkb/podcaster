@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ITunesResponse } from "../../../models/ITunesResponse";
-import { Podcast, PodcastResponse } from "../../../models/Podcast";
+import { PodcastEpisode, PodcastResponse } from "../../../models/Podcast";
 import { api } from "../api";
 
 export const getPodcastList = async (): Promise<ITunesResponse> => {
@@ -10,8 +10,10 @@ export const getPodcastList = async (): Promise<ITunesResponse> => {
   );
 };
 
-export const getPodcast = async (id: string): Promise<Podcast | null> => {
-  const url = `https://itunes.apple.com/lookup?id=${id}`;
+export const getPodcast = async (
+  id: string
+): Promise<PodcastEpisode[] | null> => {
+  const url = `https://itunes.apple.com/lookup?id=${id}&media=podcast&entity=podcastEpisode`;
   const response = (
     await axios.get("https://api.allorigins.win/get", {
       params: { url },
@@ -21,7 +23,7 @@ export const getPodcast = async (id: string): Promise<Podcast | null> => {
   const parsedResponse: PodcastResponse = JSON.parse(response);
 
   if (parsedResponse.resultCount > 0) {
-    return parsedResponse.results[0];
+    return parsedResponse.results;
   }
 
   return null;

@@ -8,7 +8,7 @@ export const Header: React.FC = () => {
   const loading = useAppSelector(selectLoading);
 
   return (
-    <div className="px-12 py-4 h-16 border-b border-gray-200 flex w-full">
+    <div className="px-12 py-4 h-16 border-b border-gray-200 flex w-full bg-white">
       <div className="flex justify-start items-center w-full">
         <Link to="/">
           <h2 className="text-blue-500">Podcaster</h2>
