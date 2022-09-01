@@ -3,5 +3,9 @@
 @tailwind utilities;
 
 h2 {
-    @apply text-2xl font-bold;
+  @apply text-2xl font-bold;
+}
+
+.mainContainer {
+  @apply px-12 py-10 flex flex-col gap-12;
 }
