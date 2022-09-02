@@ -45,37 +45,31 @@ export const PodcastPage: React.FC = () => {
     dispatch(setLoading(false));
   };
 
-  if (entries.length > 0) {
-    return (
-      <div className="gridContainer">
-        <div className="bg-white p-8 rounded-md flex flex-col gap-4 shadow-xl col-span-3">
-          <div className="flex items-center justify-center pb-4 border-b border-b-gray-200">
-            <img
-              className="w-72 rounded-md"
-              src={podcasts.length > 0 ? podcasts[0].artworkUrl600 : ""}
-              alt={currentPodcast["im:name"]?.label}
-            />
-          </div>
-          <div className="flex flex-col gap-2 pb-4 border-b border-b-gray-200">
-            <span className="font-bold">
-              {currentPodcast["im:name"]?.label}
-            </span>
-            <span className="italic">
-              by {currentPodcast["im:artist"]?.label}
-            </span>
-          </div>
-          <div>
-            <span className="font-bold">Description:</span>
-            <span className="italic">{currentPodcast.summary?.label}</span>
-          </div>
+  return (
+    <div className="gridContainer">
+      <div className="bg-white p-8 rounded-md flex flex-col gap-4 shadow-xl col-span-3">
+        <div className="flex items-center justify-center pb-4 border-b border-b-gray-200">
+          <img
+            className="w-72 rounded-md"
+            src={podcasts.length > 0 ? podcasts[0].artworkUrl600 : ""}
+            alt={currentPodcast["im:name"]?.label}
+          />
         </div>
-        <Routes>
-          <Route path="/" element={<span>podcast</span>} />
-          <Route path="episode/:episodeId" element={<span>episode</span>} />
-        </Routes>
+        <div className="flex flex-col gap-2 pb-4 border-b border-b-gray-200">
+          <span className="font-bold">{currentPodcast["im:name"]?.label}</span>
+          <span className="italic">
+            by {currentPodcast["im:artist"]?.label}
+          </span>
+        </div>
+        <div>
+          <span className="font-bold">Description:</span>
+          <span className="italic">{currentPodcast.summary?.label}</span>
+        </div>
       </div>
-    );
-  }
-
-  return <div></div>;
+      <Routes>
+        <Route path="/" element={<span>podcast</span>} />
+        <Route path="episode/:episodeId" element={<span>episode</span>} />
+      </Routes>
+    </div>
+  );
 };
