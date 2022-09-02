@@ -7,6 +7,7 @@ import { getPodcastList } from "../services/api/itunes/itunesService";
 import { setLoading } from "../store/slices/loadingSlice";
 import { getHoursDifference } from "../util/getHoursDifference";
 import { useNavigate } from "react-router-dom";
+import { loadEntries } from "../services/entries/entries.service";
 
 export const MainPage: React.FC = () => {
   const navigate = useNavigate();
@@ -33,33 +34,9 @@ export const MainPage: React.FC = () => {
   }, []);
 
   const initialize = async () => {
-    dispatch(setLoading(true));
-    const localEntries: Entry[] | null = localStorage.getItem("entries")
-      ? JSON.parse(localStorage.getItem("entries")!)
-      : null;
-
-    if (localEntries && localStorage.getItem("lastUpdated")) {
-      /*
-       * Calculate time difference in hours when last updated the local storage entries.
-       * If more than 24 hours passed, we reload the entries.
-       */
-      getHoursDifference(
-        new Date(localStorage.getItem("lastUpdated")!),
-        new Date()
-      ) > 24
-        ? await reloadEntries()
-        : dispatch(setEntries(localEntries ?? []));
-    } else {
-      await reloadEntries();
+    if (entries.length === 0) {
+      await loadEntries();
     }
-    dispatch(setLoading(false));
-  };
-
-  const reloadEntries = async () => {
-    const list: ITunesResponse = await getPodcastList();
-    dispatch(setEntries(list.feed.entry ?? []));
-    localStorage.setItem("lastUpdated", list.feed.updated.label);
-    localStorage.setItem("entries", JSON.stringify(list.feed.entry));
   };
 
   return (

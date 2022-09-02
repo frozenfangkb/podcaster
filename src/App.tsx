@@ -20,7 +20,7 @@ const App: React.FC = () => {
           <Header />
           <Routes>
             <Route path="/" element={<MainPage />} />
-            <Route path="/podcast/:podcastId" element={<PodcastPage />} />
+            <Route path="/podcast/:podcastId/*" element={<PodcastPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>
