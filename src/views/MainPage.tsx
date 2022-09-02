@@ -1,18 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Entry, ITunesResponse } from "../models/ITunesResponse";
+import { Entry } from "../models/ITunesResponse";
 import { PodcastCard } from "../components/PodcastCard";
-import { selectEntries, setEntries } from "../store/slices/podcastSlice";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { getPodcastList } from "../services/api/itunes/itunesService";
-import { setLoading } from "../store/slices/loadingSlice";
-import { getHoursDifference } from "../util/getHoursDifference";
+import { selectEntries } from "../store/slices/podcastSlice";
+import { useAppSelector } from "../store/hooks";
 import { useNavigate } from "react-router-dom";
 import { loadEntries } from "../services/entries/entries.service";
 
 export const MainPage: React.FC = () => {
   const navigate = useNavigate();
   const entries = useAppSelector(selectEntries);
-  const dispatch = useAppDispatch();
   const [filterValue, setFilterValue] = useState<string>("");
   const filteredEntries = useMemo<Entry[]>(() => {
     if (filterValue !== "") {
