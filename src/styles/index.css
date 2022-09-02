@@ -6,6 +6,10 @@ body {
   @apply bg-gray-50;
 }
 
+h1 {
+  @apply text-3xl font-bold;
+}
+
 h2 {
   @apply text-2xl font-bold;
 }
@@ -32,4 +36,8 @@ input::placeholder {
 
 .chipCounter {
   @apply bg-blue-400 px-4 py-2 rounded-md text-white text-lg font-bold;
+}
+
+.card {
+  @apply bg-white p-8 rounded-md shadow-xl;
 }

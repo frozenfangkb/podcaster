@@ -7,6 +7,8 @@ import { getPodcast } from "../services/api/itunes/itunesService";
 import { Entry } from "../models/ITunesResponse";
 import { selectEntries } from "../store/slices/podcastSlice";
 import { loadEntries } from "../services/entries/entries.service";
+import { PodcastEpisodesList } from "../components/PodcastEpisodesList";
+import { getHoursDifference } from "../util/getHoursDifference";
 
 export const PodcastPage: React.FC = () => {
   const params = useParams();
@@ -33,6 +35,29 @@ export const PodcastPage: React.FC = () => {
     if (entries.length === 0) {
       await loadEntries();
     }
+
+    const localPodcast = localStorage.getItem(
+      currentPodcast.id.attributes["im:id"]
+    );
+    const localPodcastLastUpdated = localStorage.getItem(
+      `${currentPodcast.id.attributes["im:id"]}-lastUpdated`
+    );
+
+    if (localPodcast && localPodcastLastUpdated) {
+      /*
+       * Calculate time difference in hours when last updated the local storage podcast.
+       * If more than 24 hours passed, we reload the podcast.
+       */
+      getHoursDifference(new Date(localPodcastLastUpdated), new Date()) > 24
+        ? await reloadPodcastData()
+        : setPodcasts(JSON.parse(localPodcast));
+    } else {
+      await reloadPodcastData();
+    }
+    dispatch(setLoading(false));
+  };
+
+  const reloadPodcastData = async () => {
     const podcastEpisodes: PodcastEpisode[] | null = await getPodcast(
       params.podcastId!
     );
@@ -42,12 +67,19 @@ export const PodcastPage: React.FC = () => {
       return;
     }
     setPodcasts(podcastEpisodes);
-    dispatch(setLoading(false));
+    localStorage.setItem(
+      currentPodcast.id.attributes["im:id"],
+      JSON.stringify(podcastEpisodes)
+    );
+    localStorage.setItem(
+      `${currentPodcast.id.attributes["im:id"]}-lastUpdated`,
+      new Date().toISOString()
+    );
   };
 
   return (
     <div className="gridContainer">
-      <div className="bg-white p-8 rounded-md flex flex-col gap-4 shadow-xl col-span-3">
+      <div className="card flex flex-col gap-4 col-span-3">
         <div className="flex items-center justify-center pb-4 border-b border-b-gray-200">
           <img
             className="w-72 rounded-md"
@@ -67,7 +99,7 @@ export const PodcastPage: React.FC = () => {
         </div>
       </div>
       <Routes>
-        <Route path="/" element={<span>podcast</span>} />
+        <Route path="/" element={<PodcastEpisodesList list={podcasts} />} />
         <Route path="episode/:episodeId" element={<span>episode</span>} />
       </Routes>
     </div>
